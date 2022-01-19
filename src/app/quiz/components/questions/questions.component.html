@@ -1,0 +1,16 @@
+
+<p-carousel [value]="questions" [numVisible]="1" [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+  <ng-template let-question let-i pTemplate="item">
+    <div class="product-item">
+      <div class="product-item-content">
+        <div>
+          <h4 class="p-mb-1">Q: {{question['question']}}</h4>
+          <h6 class="p-mt-0 p-mb-3">{{question.difficulty}}</h6>
+          <div *ngFor="let answer of question.allAnswers ; let i = index;" class="p-d-flex p-flex-column p-flex-md-row">
+              <div  style="height:50px" (click)="setUserAnswer(answer)"> {{answer}} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
