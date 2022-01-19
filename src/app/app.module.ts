@@ -6,33 +6,35 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { AppRoutingModule } from './app-routing.module';
-
-
-
 import { AppComponent } from './app.component';
+import {QuizComponent} from './quiz/components/quiz/quiz.component';
+import {QuestionsComponent} from './quiz/components/questions/questions.component';
+import {CarouselModule} from 'primeng/carousel';
+import {StoreModule} from '@ngrx/store';
+import {reducer} from './quiz/store/reducers/reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {QuizEffects} from './quiz/store/effects/quiz.effects';
+import {MessageService} from 'primeng/api';
 
-// ngrx related imports
-import { StoreModule } from '@ngrx/store';
-import { reducer } from './quiz/store/reducers/reducers';
-import { QuizEffects} from './quiz/store/effects/quiz.effects';
-import { EffectsModule } from '@ngrx/effects';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    QuizComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    BrowserAnimationsModule,
     HttpClientModule,
-    // ngrx related imports
+    CarouselModule,
+    AppRoutingModule,
     StoreModule.forRoot(reducer, {
     }),
     EffectsModule.forRoot([QuizEffects])
+
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
