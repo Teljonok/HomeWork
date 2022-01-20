@@ -3,9 +3,10 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as quizActions from '../actions/quiz.actions';
 
 import {IQuestion} from '../models/quiz.interface';
+import {loadQuestion} from '../actions/quiz.actions';
 
 export interface State {
-  questions: IQuestion | any;
+  question: IQuestion | any;
   result?: any;
   currentQuestion?: IQuestion |any;
   isLoading: boolean;
@@ -15,7 +16,7 @@ export interface State {
 
 
 export const initialState: State = {
-  questions: null,
+  question: null,
   result: '',
   currentQuestion: null,
   isLoading: false,
@@ -25,9 +26,9 @@ export const initialState: State = {
 
 const loadReducer = createReducer(
   initialState,
-  on(quizActions.loadQuestions, (state) => ({...state, isLoading: true})),
-  on(quizActions.loadQuestionsSuccess,
-    (state, result) => ({questions: result.response, isLoading: false, isLoadingSuccess: true})));
+  on(quizActions.loadQuestion, (state) => ({...state, isLoading: true})),
+  on(quizActions.loadQuestionSuccess,
+    (state, result) => ({question: result.response, isLoading: false, isLoadingSuccess: true})));
 
 
 export function reducer(state: State | undefined, action: Action): any {
@@ -35,9 +36,9 @@ export function reducer(state: State | undefined, action: Action): any {
 }
 
 
-export const getAllQuestions = (state: State) => {
+export const getQuestion = (state: State) => {
   return {
-    questions: state.questions,
+    question: state.question,
     result: state.result,
     isLoading: state.isLoading,
     isLoadingSuccess: state.isLoadingSuccess

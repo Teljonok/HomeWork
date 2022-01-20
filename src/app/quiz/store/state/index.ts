@@ -12,17 +12,17 @@ import * as fromQuiz from '../reducers/reducers';
 import {environment} from '../../../../environments/environment';
 
 export interface State {
-  questions: fromQuiz.State;
+  question: fromQuiz.State;
   currentQuestion: fromQuiz.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
-  questions: fromQuiz.reducer,
+  question: fromQuiz.reducer,
   currentQuestion: fromQuiz.reducer,
 
 };
 
-const reducerKeys = ['questions'];
+const reducerKeys = ['question'];
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({keys: reducerKeys})(reducer);
 }
@@ -38,11 +38,11 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
 }
 
 
-export const getQuizState = createFeatureSelector<fromQuiz.State>('questions');
+export const getQuizState = createFeatureSelector<fromQuiz.State>('question');
 
-export const getAllQuestions = createSelector(
+export const getQuestion = createSelector(
   getQuizState,
-  fromQuiz.getAllQuestions
+  fromQuiz.getQuestion
 );
 
 export const getCurrentQuestion = createSelector(

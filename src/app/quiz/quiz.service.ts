@@ -25,6 +25,18 @@ export class QuizService {
         ));
   }
 
+  getQuestion(): Observable<any> {
+    return this.http.get('https://opentdb.com/api.php?amount=1&type=multiple', {responseType: 'text'})
+      .pipe(
+        tap(
+          data => { },
+          error => {
+            this.handleError();
+            return EMPTY;
+          }
+        ));
+  }
+
   private handleError(): any {
     this.messageService.add({
       severity: 'error',
