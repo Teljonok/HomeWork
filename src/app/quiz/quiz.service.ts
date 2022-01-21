@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import { tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from 'primeng/api';
 import {IQuestion} from './store/models/quiz.interface';
 
@@ -14,15 +14,19 @@ export class QuizService {
 
 
   getQuestion(): Observable<IQuestion> {
-    return this.http.get<IQuestion>('https://opentdb.com/api.php?amount=1&type=multiple');
-      // .pipe(
-      //   tap(
-      //     data => { },
-      //     error => {
-      //       this.handleError();
-      //       return EMPTY;
-      //     }
-      //   ));
+    return this.http
+      .get<IQuestion>('https://opentdb.com/api.php?amount=1&type=multiple')
+      .pipe(map((res: any) => {
+        res.results.forEach( result => {
+          result.allAnswers = result.incorrect_answers.concat(result.correct_answer);
+        });
+        return res.results;
+        }),
+
+        catchError(() => {
+          this.handleError();
+          return EMPTY;
+        }));
   }
 
   private handleError(): any {

@@ -17,10 +17,14 @@ export class QuestionsComponent implements OnInit, OnDestroy {
    responsiveOptions: any = [];
 
   timeLeft = 20;
-  interval;
+  interval: any;
   questions$: Observable<IQuestion> | any;
+  question: IQuestion[];
 
-  constructor(private activatedRoute: ActivatedRoute, private quizService: QuizService, private store: Store<{ question: {question: IQuestion}  }>) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private quizService: QuizService,
+    private store: Store<{ question: {question: IQuestion}  }>) {
 
     this.responsiveOptions = [
       {
