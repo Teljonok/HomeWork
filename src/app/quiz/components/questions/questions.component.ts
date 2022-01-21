@@ -1,29 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {QuizService} from '../../quiz.service';
 import {IQuestion} from '../../store/models/quiz.interface';
 import {Store} from '@ngrx/store';
 import {loadQuestion} from '../../store/actions/quiz.actions';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
-  styleUrls: ['./questions.component.scss']
+  styleUrls: ['./questions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QuestionsComponent implements OnInit {
+export class QuestionsComponent implements OnInit, OnDestroy {
   questions: any;
    responsiveOptions: any = [];
 
-  // timer: any = null;
-  // startTime: Date;
-  // ellapsedTime = '00';
-
-  timeLeft: number = 20;
+  timeLeft = 20;
   interval;
+  questions$: Observable<IQuestion> | any;
 
-  constructor(private activatedRoute: ActivatedRoute, private quizService: QuizService, private store: Store) {
-
-    store.dispatch(loadQuestion());
+  constructor(private activatedRoute: ActivatedRoute, private quizService: QuizService, private store: Store<{ question: {question: IQuestion}  }>) {
 
     this.responsiveOptions = [
       {
@@ -46,19 +43,11 @@ export class QuestionsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.activatedRoute.data.subscribe((response: any) => {
-    //   console.log('questions FETCHING', response);
-    //   this.questions = JSON.parse(response.data).results;
-    //   this.questions.forEach( (question: IQuestion) => {
-    //     question.allAnswers = [];
-    //     question.allAnswers = question.incorrect_answers.concat(question.correct_answer);
-    //   });
-    // });
+    this.store.dispatch(loadQuestion());
+    this.questions$ = this.store.select('question');
 
     this.loadQuestion();
   }
-
-  //set timer
 
 
   setUserAnswer(answer: any) {
@@ -70,13 +59,10 @@ export class QuestionsComponent implements OnInit {
   }
 
   private loadQuestion() {
-    // this.startTime = new Date();
-    // this.ellapsedTime = '00';
-    // this.timer = setInterval(() => {
-    //   this.tick();
-    // }, 1000);
     this.startTimer();
   }
+
+  //set timer
 
   startTimer() {
     this.interval = setInterval(() => {
@@ -91,22 +77,7 @@ export class QuestionsComponent implements OnInit {
     }, 1000);
   }
 
-
-  // tick() {
-  //   let now = new Date();
-  //   const diff = (now.getTime() - this.startTime.getTime()) / 1000;
-  //   if (diff >= 20) {
-  //     this.store.dispatch(loadQuestion());
-  //     this.ellapsedTime = '00';
-  //   }
-  //   else {
-  //     this.ellapsedTime = this.parseTime(diff);
-  //   }
-  // }
-
-  // parseTime(totalSeconds: number) {
-  //   let secs: string | number = Math.round(totalSeconds % 60);
-  //   secs = (secs < 10 ? '0' : '') + secs;
-  //   return `${secs}`;
-  // }
+  ngOnDestroy(): void{
+    clearInterval(this.interval);
+  }
 }

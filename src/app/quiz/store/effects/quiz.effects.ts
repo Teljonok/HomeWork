@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, exhaustMap, catchError } from 'rxjs/operators';
+import {map, exhaustMap, catchError, mergeMap} from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as quizActions from '../actions/quiz.actions';
@@ -15,15 +15,19 @@ export class QuizEffects {
     private quizService: QuizService
   ) {}
 
-  loadQuestion$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(quizActions.loadQuestion),
-      exhaustMap(action =>
-        this.quizService.getQuestion().pipe(
-          map(response => quizActions.loadQuestionSuccess(response)),
-          catchError((error: any) => of(quizActions.loadQuestionFail(error))))
-      )
-    )
+  loadQuestion$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(loadQuestion),
+        mergeMap( (action) => {
+          return this.quizService.getQuestion().pipe(
+            map( (question) => {
+              return loadQuestionSuccess({question});
+            })
+          );
+        })
+      );
+    },
   );
 
     //setCurrentQuestion

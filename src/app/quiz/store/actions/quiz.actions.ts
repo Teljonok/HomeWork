@@ -2,22 +2,19 @@ import {createAction, props} from '@ngrx/store';
 import {IQuestion} from '../models/quiz.interface';
 
 
-export const LOAD_QUESTION = '[Questios] Load Questions';
-export const LOAD_QUESTION_FAIL = '[Question] Load Questions Fail';
-export const LOAD_QUESTION_SUCCESS = '[Question] Load Questions Success';
+export const LOAD_QUESTION = '[QUESTION] Load Question';
+export const LOAD_QUESTION_FAIL = '[QUESTION] Load Question Fail';
+export const LOAD_QUESTION_SUCCESS = '[QUESTION] Load Question Success';
 
-export const GET_CURRENT_QUESTION = '[Question] Get Current Question';
-export const ADD_CURRENT_QUESTION = '[Question] Add Current Question';
+export const GET_CURRENT_QUESTION = '[QUESTION] Get Current Question';
+export const ADD_CURRENT_QUESTION = '[QUESTION] Add Current Question';
 
 
-export const loadQuestion = createAction(
-  LOAD_QUESTION
-
-);
+export const loadQuestion = createAction(LOAD_QUESTION);
 
 export const loadQuestionSuccess = createAction(
   LOAD_QUESTION_SUCCESS,
-  props<any>()
+  props<{question: IQuestion}>()
 );
 
 export const loadQuestionFail = createAction(

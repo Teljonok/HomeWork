@@ -2,50 +2,36 @@ import { Action, createReducer, on } from '@ngrx/store';
 
 import * as quizActions from '../actions/quiz.actions';
 
-import {IQuestion} from '../models/quiz.interface';
-import {loadQuestion} from '../actions/quiz.actions';
-
-export interface State {
-  question: IQuestion | any;
-  result?: any;
-  currentQuestion?: IQuestion |any;
-  isLoading: boolean;
-  isLoadingSuccess: boolean;
-
-}
+import {initialQuizState, IQuizState} from '../state/quiz.state';
 
 
-export const initialState: State = {
-  question: null,
-  result: '',
-  currentQuestion: null,
-  isLoading: false,
-  isLoadingSuccess: false,
-
-};
-
-const loadReducer = createReducer(
-  initialState,
+const _quizReducer = createReducer(
+  initialQuizState,
   on(quizActions.loadQuestion, (state) => ({...state, isLoading: true})),
-  on(quizActions.loadQuestionSuccess,
-    (state, result) => ({question: result.response, isLoading: false, isLoadingSuccess: true})));
+  on(quizActions.loadQuestionSuccess, (state, action) => {
+    return {
+      ...state,
+      question: action.question,
+    };
+  })
+  );
 
 
-export function reducer(state: State | undefined, action: Action): any {
-  return  loadReducer(state, action);
+
+export function quizReducer(state: IQuizState | undefined, action: Action): any {
+  return  _quizReducer(state, action);
 }
 
 
-export const getQuestion = (state: State) => {
+export const getQuestion = (state: IQuizState) => {
   return {
     question: state.question,
-    result: state.result,
     isLoading: state.isLoading,
     isLoadingSuccess: state.isLoadingSuccess
   };
 };
 
-export const getCurrentQuestion = (state: State) => {
+export const getCurrentQuestion = (state: IQuizState) => {
   return {
     currentQuestion: state.currentQuestion
   };

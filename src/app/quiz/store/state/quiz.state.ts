@@ -1,11 +1,15 @@
 import {IQuestion} from '../models/quiz.interface';
 
 export interface IQuizState {
-  questions: IQuestion[];
-  selectedQuestion: IQuestion |any;
+  question: IQuestion | any;
+  currentQuestion?: IQuestion | any;
+  isLoading: boolean;
+  isLoadingSuccess: boolean;
 }
 
 export const initialQuizState: IQuizState = {
-  questions: [],
-  selectedQuestion: null
+  question: null,
+  currentQuestion: null,
+  isLoading: false,
+  isLoadingSuccess: false,
 };
