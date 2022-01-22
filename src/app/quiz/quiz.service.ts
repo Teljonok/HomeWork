@@ -15,10 +15,16 @@ export class QuizService {
 
   getQuestion(): Observable<IQuestion> {
     return this.http
-      .get<IQuestion>('https://opentdb.com/api.php?amount=1&type=multiple')
+      .get<IQuestion>('https://opentdb.com/api.php?amount=1&encode=base64&type=multiple')
       .pipe(map((res: any) => {
-        res.results.forEach( result => {
-          result.allAnswers = result.incorrect_answers.concat(result.correct_answer);
+        res.results.forEach( (result: any) => {
+          result.question = atob(result.question);
+          const tempIncorrectAnswers: { option: string; correct: boolean; clicked: boolean }[] = [];
+          const tempCorrectAnswer = [{option: atob(result.correct_answer), correct: true , clicked: false}];
+          result.incorrect_answers.forEach( (answer: string) => {
+            tempIncorrectAnswers.push({option: atob(answer), correct: false, clicked: false});
+          });
+          result.allAnswers = tempIncorrectAnswers.concat(tempCorrectAnswer);
         });
         return res.results;
         }),

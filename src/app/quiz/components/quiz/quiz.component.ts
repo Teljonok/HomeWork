@@ -16,7 +16,6 @@ export class QuizComponent implements OnInit {
 
 
   startQuiz(): any {
-
     this.router.navigate(['/questions']);
   }
 }

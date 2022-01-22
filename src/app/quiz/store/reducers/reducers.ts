@@ -3,6 +3,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as quizActions from '../actions/quiz.actions';
 
 import {initialQuizState, IQuizState} from '../state/quiz.state';
+import {IAnswer, IQuestion} from '../models/quiz.interface';
 
 
 const _quizReducer = createReducer(
@@ -11,16 +12,33 @@ const _quizReducer = createReducer(
   on(quizActions.loadQuestionSuccess, (state, action) => {
     return {
       ...state,
-      question: action.question,
+      isLoading: false,
+      question: action.question
     };
+  }),
+  on(quizActions.updateAnswer, (state, action) => {
+    state.question?.map((question: IQuestion) => {
+      const updatedAnswers = question.allAnswers.map((answer: IAnswer) => {
+        return action.option === answer.option ? action : answer;
+      });
+      return {
+        ...state,
+        question: {
+          ...state.question.allAnswers,
+          allAnswers: updatedAnswers
+        }
+      }; }
+    );
   })
   );
+
 
 
 
 export function quizReducer(state: IQuizState | undefined, action: Action): any {
   return  _quizReducer(state, action);
 }
+
 
 
 export const getQuestion = (state: IQuizState) => {

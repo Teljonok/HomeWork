@@ -1,12 +1,9 @@
 
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MessageService} from 'primeng/api';
 import {QuizModule} from './quiz/quiz.module';
-
-
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,7 +11,8 @@ import {QuizModule} from './quiz/quiz.module';
   ],
   imports: [
     QuizModule,
-    AppRoutingModule,
+
+    RouterModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import {IQuestion} from '../models/quiz.interface';
 
 export interface IQuizState {
-  question: IQuestion | any;
+  question: IQuestion[] | any;
   currentQuestion?: IQuestion | any;
   isLoading: boolean;
   isLoadingSuccess: boolean;

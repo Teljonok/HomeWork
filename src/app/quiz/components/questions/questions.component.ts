@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {QuizService} from '../../quiz.service';
 import {IQuestion} from '../../store/models/quiz.interface';
 import {Store} from '@ngrx/store';
-import {loadQuestion} from '../../store/actions/quiz.actions';
+import {loadQuestion, updateAnswer} from '../../store/actions/quiz.actions';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -13,18 +13,18 @@ import {Observable} from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuestionsComponent implements OnInit, OnDestroy {
-  questions: any;
+   questions: any;
    responsiveOptions: any = [];
 
   timeLeft = 20;
   interval: any;
-  questions$: Observable<IQuestion> | any;
-  question: IQuestion[];
+  questions$: Observable<IQuestion[]> | any;
+  question: IQuestion[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private quizService: QuizService,
-    private store: Store<{ question: {question: IQuestion}  }>) {
+    private store: Store<{ question: {question: IQuestion[]}}>) {
 
     this.responsiveOptions = [
       {
@@ -49,26 +49,16 @@ export class QuestionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(loadQuestion());
     this.questions$ = this.store.select('question');
-
     this.loadQuestion();
   }
 
-
-  setUserAnswer(answer: any) {
-    console.log(answer);
-  }
-
-  setCurrentQuestion(page: any) {
-    console.log(page);
-  }
-
-  private loadQuestion() {
+  loadQuestion(): void {
     this.startTimer();
   }
 
   //set timer
 
-  startTimer() {
+  private startTimer() {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -79,6 +69,25 @@ export class QuestionsComponent implements OnInit, OnDestroy {
         clearInterval(this.interval);
       }
     }, 1000);
+  }
+
+  goToNexQuestion(){
+    clearInterval(this.interval);
+    this.loadQuestion();
+    this.store.dispatch(loadQuestion());
+    this.timeLeft = 20;
+
+  }
+
+  setUserAnswer(answer: any) {
+
+    answer = { ...answer, clicked: true};
+    this.store.dispatch(updateAnswer(answer));
+
+  }
+
+  setCurrentQuestion(page: any) {
+    console.log(page);
   }
 
   ngOnDestroy(): void{

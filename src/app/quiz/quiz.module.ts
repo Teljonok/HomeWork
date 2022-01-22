@@ -8,9 +8,11 @@ import {QuestionsComponent} from './components/questions/questions.component';
 import {MessageService} from 'primeng/api';
 
 import {StoreModule} from '@ngrx/store';
-import { quizReducer } from './store/reducers/reducers';
+import {quizReducer} from './store/reducers/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {QuizEffects} from './store/effects/quiz.effects';
+import {ButtonModule} from 'primeng/button';
+import {RippleModule} from 'primeng/ripple';
 
 
 @NgModule({
@@ -22,8 +24,10 @@ import {QuizEffects} from './store/effects/quiz.effects';
     HttpClientModule,
     CarouselModule,
     QuizRoutingModule,
-    StoreModule.forRoot({ question: quizReducer}),
-    EffectsModule.forRoot([QuizEffects])
+    StoreModule.forRoot({question: quizReducer}),
+    EffectsModule.forRoot([QuizEffects]),
+    ButtonModule,
+    RippleModule
   ],
   providers: [MessageService]
 })

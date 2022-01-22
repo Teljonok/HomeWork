@@ -5,6 +5,12 @@ export interface IQuestion {
   incorrect_answers: string[];
   question: string;
   type: string;
-  allAnswers?: any;
+  allAnswers: IAnswer[];
+  isCorrectAnswer?: string;
 }
 
+export interface IAnswer {
+  option: string;
+  correct: boolean;
+  clicked: boolean;
+}
