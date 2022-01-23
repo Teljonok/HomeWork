@@ -18,7 +18,7 @@ export class QuestionsComponent implements OnInit, OnDestroy {
 
   timeLeft = 20;
   interval: any;
-  questions$: Observable<{ question: { question: IQuestion[] } }[]> = [];
+  questions$: Observable<{question: IQuestion[]}> = [];
   question: IQuestion[] = [];
 
   constructor(
