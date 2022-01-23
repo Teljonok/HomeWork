@@ -17,17 +17,19 @@ const _quizReducer = createReducer(
     };
   }),
   on(quizActions.updateAnswer, (state, action) => {
-    state.question?.map((question: IQuestion) => {
-      const updatedAnswers = question.allAnswers.map((answer: IAnswer) => {
-        return action.option === answer.option ? action : answer;
-      });
-      return {
-        ...state,
-        question: {
-          ...state.question.allAnswers,
-          allAnswers: updatedAnswers
-        }
-      }; }
+    return state.question?.map((question: IQuestion) => {
+        const updatedAnswers = question.allAnswers.map((answer: IAnswer) => {
+
+          return action.option === answer.option ? action : answer;
+        });
+        return {
+          ...state,
+          question: {
+            ...state.question.allAnswers,
+            allAnswers: updatedAnswers
+          }
+        };
+      }
     );
   })
   );
