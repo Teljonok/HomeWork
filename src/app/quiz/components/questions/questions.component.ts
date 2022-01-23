@@ -18,7 +18,7 @@ export class QuestionsComponent implements OnInit, OnDestroy {
 
   timeLeft = 20;
   interval: any;
-  questions$: Observable<IQuestion[]> | any;
+  questions$: Observable<{ question: { question: IQuestion[] } }[]> = [];
   question: IQuestion[] = [];
 
   constructor(
@@ -58,7 +58,7 @@ export class QuestionsComponent implements OnInit, OnDestroy {
 
   //set timer
 
-  private startTimer() {
+  private startTimer(): void {
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -71,7 +71,7 @@ export class QuestionsComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  goToNexQuestion(){
+  goToNexQuestion(): void{
     clearInterval(this.interval);
     this.loadQuestion();
     this.store.dispatch(loadQuestion());
@@ -79,14 +79,14 @@ export class QuestionsComponent implements OnInit, OnDestroy {
 
   }
 
-  setUserAnswer(answer: any) {
+  setUserAnswer(answer: any): void {
 
     answer = { ...answer, clicked: true};
     this.store.dispatch(updateAnswer(answer));
 
   }
 
-  setCurrentQuestion(page: any) {
+  setCurrentQuestion(page: any): void {
     console.log(page);
   }
 
